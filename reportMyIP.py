@@ -3,6 +3,7 @@ import fcntl
 import struct
 import requests
 import socket
+from time import sleep
 
 
 def get_ip_address(ifname):
@@ -13,16 +14,18 @@ def get_ip_address(ifname):
         struct.pack('256s', ifname[:15])
     )[20:24])
 
-myIP = get_ip_address('wlan0')
-hostname = socket.gethostname()
 
-print("hostname : " + hostname)
-print("myIP : "+myIP)
+while True:
+  myIP = get_ip_address('wlan0')
+  hostname = socket.gethostname()
 
-r = requests.get("http://192.168.0.147/monitor/getEvent.php?eventFct=add&host={0}&type=ip&text={1}".format(hostname,myIP))
-print(r.json())
+  print("hostname : " + hostname)
+  print("myIP : "+myIP)
 
-r = requests.get("http://192.168.0.147/monitor/getEvent.php?eventFct=getLastEventByType&host=hostname&type=ip")
-print(r.json())
+  r = requests.get("http://192.168.0.147/monitor/getEvent.php?eventFct=add&host={0}&type=ip&text={1}".format(hostname,myIP))
+  print(r.json())
 
+  r = requests.get("http://192.168.0.147/monitor/getEvent.php?eventFct=getLastEventByType&host=hostname&type=ip")
+  print(r.json())
+  sleep(60)
 
