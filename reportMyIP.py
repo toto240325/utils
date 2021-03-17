@@ -24,9 +24,9 @@ while True:
   print("myIP : "+myIP)
 
   r = requests.get("http://192.168.0.147/monitor/getEvent.php?eventFct=add&host={0}&type=ip&text={1}".format(hostname,myIP))
-  print(r.json())
+  #print(r.json())
 
-  r = requests.get("http://192.168.0.147/monitor/getEvent.php?eventFct=getLastEventByType&host=hostname&type=ip")
-  print(r.json())
-  sleep(60)
+  #r = requests.get("http://192.168.0.147/monitor/getEvent.php?eventFct=getLastEventByType&host=hostname&type=ip")
+  #print(r.json())
+  sleep(60*60)
 
