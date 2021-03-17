@@ -1,0 +1,35 @@
+alias h='history'
+#alias mysuspend='sudo dbus-send --system --print-reply  --dest="org.freedesktop.UPower"  /org/freedesktop/UPower org.freedesktop.UPower.Suspend'
+#alias mountdrived='sudo mkdir /mnt/mysmb; sudo mount -t cifs -o username=toto,password=Toto! //192.168.0.2/d  /mnt/mysmb'
+#alias unmountdrived='sudo umount /mnt/mysmb'
+#alias wolmypc3='wakeonlan 74:DA:38:82:A3:EC'
+alias ls='ls --color=auto'
+#alias dir='dir --color=auto'
+#alias vdir='vdir --color=auto'
+
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
+# some more ls aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+alias lt='ls -ltra'
+
+#my aliases
+alias aliasedit='vi ~/.bash_aliases'
+alias aliasrun='. ~/.bash_aliases'
+alias aliastest="echo test2"
+
+
+alias mysuspend="sudo systemctl --no-wall suspend"
+#alias mysuspend="sudo sh -c 'echo mem > /sys/power/state'"
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+#alias startwifi='sudo wpa_supplicant -B -iwlan0 -clinksyswpa.conf -Dwext'
+alias wolhp='sudo ifconfig eth0 up; sudo etherwake -i eth0 e4:11:5b:32:98:63'
+alias gitca='git commit -a -m "."'
+alias sshagent="eval \`ssh-agent -s\`; ssh-add"
