@@ -17,13 +17,14 @@ def get_ip_address(ifname):
 
 
 while True:
-  myIP = get_ip_address('wlan0')
+  myInterface = 'wlan0'
+  myIP = get_ip_address(myInterface)
   hostname = socket.gethostname()
 
   print("hostname : " + hostname)
   print("myIP : "+myIP)
 
-  r = requests.get("http://192.168.0.147/monitor/getEvent.php?eventFct=add&host={0}&type=ip&text={1}".format(hostname,myIP))
+  r = requests.get("http://192.168.0.147/monitor/getEvent.php?eventFct=add&host={0}&type=ip&text={1}".format(hostname,myInterface+":"+myIP))
   #print(r.json())
 
   #r = requests.get("http://192.168.0.147/monitor/getEvent.php?eventFct=getLastEventByType&host=hostname&type=ip")
