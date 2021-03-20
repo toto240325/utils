@@ -33,4 +33,4 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 alias wolhp='sudo ifconfig eth0 up; sudo etherwake -i eth0 e4:11:5b:32:98:63'
 alias gitca='git commit -a -m "."'
 alias sshagent="eval \`ssh-agent -s\`; ssh-add"
-#test
+alias lsys="less /var/log/syslog"
