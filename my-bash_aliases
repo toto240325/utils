@@ -20,7 +20,7 @@ alias lt='ls -ltra'
 #my aliases
 alias aliasedit='vi ~/.bash_aliases'
 alias aliasrun='. ~/.bash_aliases'
-alias aliastest="echo test2"
+alias aliastest="echo test3"
 
 
 alias mysuspend="sudo systemctl --no-wall suspend"
