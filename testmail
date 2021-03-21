@@ -1,3 +1,0 @@
-echo -e "Subject:test email on `date` from user `whoami`@`hostname`\r\n\r\nThis is a test mail at `date`" |/usr/bin/msmtp --debug --from=default -t toto240325@gmail.com
-
-
