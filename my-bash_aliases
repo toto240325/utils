@@ -18,8 +18,8 @@ alias l='ls -CF'
 alias lt='ls -ltra'
 
 #my aliases
-alias aliasedit='vi ~/.bash_aliases'
-alias aliasrun='. ~/.bash_aliases'
+alias aliasedit='vi ~/utils/my-bash_aliases'
+alias aliasrun='. ~/utils/my-bash_aliases'
 alias aliastest="echo test3"
 
 
@@ -32,5 +32,6 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 #alias startwifi='sudo wpa_supplicant -B -iwlan0 -clinksyswpa.conf -Dwext'
 alias wolhp='sudo ifconfig eth0 up; sudo etherwake -i eth0 e4:11:5b:32:98:63'
 alias gitca='git commit -a -m "."'
+alias gitpp='git pull; git push'
 alias sshagent="eval \`ssh-agent -s\`; ssh-add"
 alias lsys="less /var/log/syslog"
