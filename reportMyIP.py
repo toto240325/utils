@@ -4,7 +4,7 @@ import struct
 import requests
 import socket
 from time import sleep
-
+import params
 
 
 def get_ip_address(ifname):
@@ -17,7 +17,7 @@ def get_ip_address(ifname):
 
 
 while True:
-  myInterface = 'wlan0'
+  myInterface = params.myInterface
   myIP = get_ip_address(myInterface)
   hostname = socket.gethostname()
 
