@@ -24,7 +24,11 @@ while True:
   #print("hostname : " + hostname)
   #print("myIP : "+myIP)
 
-  r = requests.get("http://192.168.0.147/monitor/getEvent.php?eventFct=add&host={0}&type=ip&text={1}".format(hostname,myInterface+":"+myIP))
+  try:
+    r = requests.get("http://192.168.0.147/monitor/getEvent.php?eventFct=add&host={0}&type=ip&text={1}".format(hostname,myInterface+":"+myIP))
+  except Exception as error:
+    print("there was an exception : " + str(error))
+
   #print(r.json())
 
   #r = requests.get("http://192.168.0.147/monitor/getEvent.php?eventFct=getLastEventByType&host=hostname&type=ip")
