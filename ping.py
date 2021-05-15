@@ -59,7 +59,7 @@ def main():
   print 'Number of arguments:', l, 'arguments.'
   print 'Argument List:', str(sys.argv)
   print("script name : " + sys.argv[0])
-  if l > 0:
+  if l > 1:
     print("first arg : " + sys.argv[1])
     myhost = sys.argv[1]
     print("host %s : %s" % (myhost,ping(myhost)))
