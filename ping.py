@@ -1,130 +1,69 @@
-import json
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-import smtplib
-from time import sleep
-import datetime
-import os
-import datetime
+#this function simulates a ping and returns 0 if machine could be pinged, not 0 otherwise
+
+from platform   import system as system_name  # Returns the system/OS name
+from subprocess import call   as system_call  # Execute a shell command
 import subprocess
-import glob
-import time
-import params
+import sys
 
 
-def checkPing():
-  global fhtml
-  cmd="/bin/ping -c 1 google.com 2> /dev/null > /tmp/ping.txt && /usr/bin/awk '/0% packet loss/ {print $4}' </tmp/ping.txt"
-  str="error"
-  try:
-    str=subprocess.check_output(cmd, shell=True).rstrip()
-  except:
-    return "error 1"
-  if str=="1":
-    return "OK"
-  else:
-    return "error 2"
+def ping(myhost):
 
-def sendmail(subject,message):
-  msg = MIMEMultipart()
+    """
+    Returns True if host (str) responds to a ping request.
+    Remember that a host may not respond to a ping (ICMP) request even if the host name is valid.
+    """
+    # Ping command count option as function of OS
+    param = '-n 1 -w 2' if system_name().lower()=='windows' else '-c 1 -w 2'
+    command = "ping %s %s" % (param,myhost)
+    ping_response = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE).stdout.read() 
+    #print("ping resp : %s" % ping_response)
 
-  mailer_pw = params.pw
-  msg['From'] = params.mailer
-  msg['To'] = "toto2403252@gmail.com"
-  msg['Subject'] = subject
+    #will be something like this :
+    #Pinging 192.168.0.147 with 32 bytes of data:
+    #Reply from 192.168.0.147: bytes=32 time<1ms TTL=64
+    #Ping statistics for 192.168.0.147:
+    #    Packets: Sent = 1, Received = 1, Lost = 0 (0% loss),
+    #Approximate round trip times in milli-seconds:
+    #    Minimum = 0ms, Maximum = 0ms, Average = 0ms
 
-  msg.attach(MIMEText(message, 'plain'))
-  server = smtplib.SMTP('smtp.gmail.com: 587')
-  server.starttls()
-  server.login(msg['From'], password)
-  server.sendmail(msg['From'], msg['To'], msg.as_string())
-  server.quit()
+    #print("ping response :>"+ping_response+"<")
+    if ping_response == "":
+      return False
+    pingOK = True
+    if ((b'100% loss' in ping_response.lower()) or 
+        (b'100% packet loss' in ping_response.lower()) or 
+        (b'unreachable' in ping_response.lower()) or 
+        (b'request timed out' in ping_response.lower())
+        ):
+        pingOK = False
 
-def openfile(htmlfile):
+    return pingOK
 
-  if not os.path.exists(htmlFile):
-    fhtml=open(htmlFile,"a")
-    fhtml.write("<html>")
-    fhtml.write ("""\
-  <head>
-    <meta http-equiv="refresh" content="30">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"> </script>
-    <script>
-      $(document).ready(function(){
-        $("html, body").animate({ scrollTop: 99999 },"slow");
-        console.log("done");
-      });
-    </script>
-    <style type="text/css">
-      body { font-family: 'Courier New', monospace; font-size: 10px; }
-      p    { line-height: 1px;}
-      table, th, td { border: 1px solid black;border-collapse: collapse;}
-    </style>
-   </head>
-   <html>
-   <body>
-   <table><tr><th>time<th>ping</tr>
-    """)
-  else:
-    fhtml=open(htmlFile,"a")
-  fhtml.flush()
-  return (fhtml)
+#--------------------------------------
 
-def closefile(fhtml):
-  fhtml.flush()
-  fhtml.close()
+def testPing():
+    #testing the function 
 
-def updateEmail():
-  global iterCompressorOFF,iterCompressorON,temp
-  x = datetime.datetime.now()
-  now = x.strftime("%H:%M:%S")
-  if iterCompressorOFF>ceilingCompressorOFF:
-    msg = now + "\n"
-    msg = msg + "nb iter with compressor OFF : " + str(iterCompressorOFF) + "\n"
-    print ("Sending email : "+msg)
-    sendmail("Fridge problem (no compressor : "+str(iterCompressorOFF)+")",msg)
-  if iterCompressorON>ceilingCompressorON:
-    msg = now + "\n"
-    msg = msg + "nb iter with compressor ON : " + str(iterCompressorON) + "\n"
-    print ("Sending email : "+msg)
-    sendmail("Fridge problem (compressor ON: "+str(iterCompressorON)+")",msg)
+    myhost = "192.168.0.98"
+    print("host %s : %s" % (myhost,ping(myhost)))
 
+    myhost = "192.168.0.147"
+    print("host %s : %s" % (myhost,ping(myhost)))
 
-def updateWeb(res):
-  (f,fhtml)=openfile()
-  x = datetime.datetime.now()
-  #now = x.strftime("%d/%m/%Y %H:%M:%S")
-  now = x.strftime("%d/%m/%Y %H:%M:%S")
+    myhost = "192.168.0.99"
+    print("host %s : %s" % (myhost,ping(myhost)))
 
-  bartxt,barhtml = bar(iterCompressorOFF)
-  msg = "<td>{0}<td>{1}<td>{2}<td>{3}<td>{4}<td>{5}<td>{6}".format((iter),now,statusHtml(status),lineQual,str(temp),bar2(temp),"ON" if status else "")
-  msgtxt = "{0:<3}; {1} ; {2} ; {3:>3} ; {4} ; {5} ; {6}".format((iter),now,status,lineQual,str(temp),bar2(temp),"ON" if status else "")
-  msgtxt = msgtxt + bartxt
-  msghtml = "<tr>" + msg  + "<td>" + barhtml + "</tr>"
-
-  #msg = str(iter) + ";" + now + ";" + str(status) + ";" + GPIO.intput(relay)
-  print (msgtxt)
-  f.write(msgtxt+"\n")
-  fhtml.write(msghtml)
-
-  closefiles(f,fhtml)
-
+def main():
+  testPing()
+  l = len(sys.argv)
+  print 'Number of arguments:', l, 'arguments.'
+  print 'Argument List:', str(sys.argv)
+  print("script name : " + sys.argv[0])
+  if l > 0:
+    print("first arg : " + sys.argv[1])
+    myhost = sys.argv[1]
+    print("host %s : %s" % (myhost,ping(myhost)))
  
-#-main---------------------------------------------
-htmlFile = "/home/toto/html/ping.html"
-fhtml = None
-
-fhtml=openfile(htmlFile)
-
-res=checkPing()
-x = datetime.datetime.now()
-#now = x.strftime("%d/%m/%Y %H:%M:%S")
-now = x.strftime("%d/%m %H:%M:%S")
-msg = "<td>{0}<td>{1}".format(now,res)
-msghtml = "<tr>" + msg  + "</tr>"
-print (msghtml)
-fhtml.write(msghtml)
-
-closefile(fhtml)
-
-
+if __name__ == "__main__":
+   
+  main()
