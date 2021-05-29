@@ -1,0 +1,40 @@
+# Edit this file to introduce tasks to be run by cron.
+# 
+# Each task to run has to be defined through a single line
+# indicating with different fields when the task will be run
+# and what command to run for the task
+# 
+# To define the time you can provide concrete values for
+# minute (m), hour (h), day of month (dom), month (mon),
+# and day of week (dow) or use '*' in these fields (for 'any').
+# 
+# Notice that tasks will be started based on the cron's system
+# daemon's notion of time and timezones.
+# 
+# Output of the crontab jobs (including errors) is sent through
+# email to the user the crontab file belongs to (unless redirected).
+# 
+# For example, you can run a backup of all your user accounts
+# at 5 a.m every week with:
+# 0 5 * * 1 tar -zcf /var/backups/home.tgz /home/
+# 
+# For more information see the manual pages of crontab(5) and cron(8)
+# 
+MAILTO=toto240325@gmail.com
+#MAILTO=pi
+
+
+#@reboot sleep 12h; sudo reboot
+#@reboot python /home/pi/frigo/frigo.py > ~/log/frigo.log # 2>&1 
+@reboot python /home/pi/utils/piloop.py
+@reboot python /home/pi/watchdog/checkPS4.py >> /tmp/crontab-checkPS4.log 2>&1
+#@reboot /home/pi/adhocwifi.sh
+
+# m  h  dom mon dow   command
+  0  12 *   *   *     reboot
+ */1 *  *   *   *     python /home/pi/utils/ping.py >> ~/log/ping.log # 2>&1
+  0  0  *   *   *     /home/pi/doatreboot.sh; reboot
+# 46 21 *   *   *     mv /home/pi/frigo/html/frigo.html /home/pi/frigo/html/frigo-`date \+%Y-%m-%d-%H-%M.%S`.html && reboot
+
+#57 10 * * * python /home/pi/frigo/qtest.py
+

@@ -1,0 +1,2 @@
+sudo crontab -l > ~/utils/files/"crontab-`hostname`"
+
