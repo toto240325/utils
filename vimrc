@@ -10,5 +10,5 @@ set shiftwidth=2
 
 colorscheme elflord
 highlight CursorLineNR ctermbg=red
-#set cursorline
+" set cursorline
 
