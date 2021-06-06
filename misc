@@ -1,2 +1,3 @@
+##!/usr/bin/bash
 sudo crontab -l > ~/utils/files/"crontab-`hostname`"
 
