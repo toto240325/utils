@@ -11,4 +11,10 @@ set shiftwidth=2
 colorscheme elflord
 highlight CursorLineNR ctermbg=red
 " set cursorline
+set mouse=a
+
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
+    \| exe "normal! g'\"" | endif
+endif
 
