@@ -1,5 +1,17 @@
 #!/bin/bash
-mypws=('ucanttouchthis' 'iloveyou' 'monkey')
+echo "\
+Usage :
+. .\have-i-been-pawned.sh : test run with fake passwords
+. .\have-i-been-pawned.sh pw1 'pw!2' 'pw\3' mypw : run with passwords passed in args
+NB : enclose pw with special chars in single quotes !
+
+"
+
+mypws=( "$@" )
+
+if [ $# -eq 0 ]; then
+  mypws=('ucantto!uchthis' 'iloveyou' 'monkey')
+fi
  
 for mypw in "${mypws[@]}"
 do
